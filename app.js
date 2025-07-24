@@ -20,6 +20,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter =  require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const MongoStore = require("connect-mongo");
+const rootRouter = require("./routes/roots.js");
 
 
 let ATLAS_URL = process.env.ATLASDB_URL 
@@ -89,6 +90,7 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use("/", rootRouter)
 
 // listing
 app.use("/listings", listingRouter)
