@@ -1,0 +1,149 @@
+<% layout ("layouts/boilerplate.ejs")-%>
+<body>
+    
+    <style>
+        #filters-container {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        #filters {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: auto;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            flex-grow: 1;
+            
+        }
+
+        .filter {
+            flex: 0 0 auto;
+            text-align: center;
+            opacity: 0.7;
+            min-width: 80px;
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .filter p {
+            font-size: 0.9rem;
+        }
+
+        .tax-info {
+            display: none;
+        }
+
+        .tax-toggle {
+            flex: 0 0 auto;
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            margin-left: 2rem;
+        }
+
+        /* Hide scrollbar */
+        #filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        #filters {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+    .scroll-btn {
+        display: flex;
+        background-color: white;
+        align-items: center;
+        font-size: 1rem;
+        cursor: pointer;
+    padding: 0.4rem 0.7rem;
+    border-radius: 50%;
+    /* margin: 0 0.5rem; */
+    /* transition: background-color 0.3s, transform 0.2s; */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.scroll-btn:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+    </style>
+
+    <!-- Scrollable Filter Slider -->
+    <div id="filters-container">
+        <button class="scroll-btn" onclick="scrollFilters(-100)"><i class="fa-solid fa-chevron-left"></i></i></button>
+       
+        <div class="filters" id="filters">
+            <div class="filter"><div><i class="fa-solid fa-fire"></i></div><p>Trending</p></div>
+            <div class="filter"><div><i class="fa-solid fa-bed"></i></div><p>Rooms</p></div>
+            <div class="filter"><div><i class="fa-solid fa-mountain-city"></i></div><p>Iconic city</p></div>
+            <div class="filter"><div><i class="fa-solid fa-mountain"></i></div><p>Mountain</p></div>
+            <div class="filter"><div><i class="fa-solid fa-person-swimming"></i></div><p>Pool</p></div>
+            <div class="filter"><div><i class="fa-brands fa-fort-awesome"></i></div><p>Castles</p></div>
+            <div class="filter"><div><i class="fa-solid fa-campground"></i></div><p>Camping</p></div>
+            <div class="filter"><div><i class="fa-solid fa-cow"></i></div><p>Farms</p></div>
+            <div class="filter"><div><i class="fa-solid fa-snowman"></i></div><p>Arctic</p></div>
+            <div class="filter"><div><i class="fa-solid fa-landmark-dome"></i></div><p>Dome</p></div>
+            <div class="filter"><div><i class="fa-solid fa-sailboat"></i></div><p>Boat</p></div> 
+        </div>
+        
+        <button class="scroll-btn" onclick="scrollFilters(100)"><i class="fa-solid fa-chevron-right"></i></i></button>
+
+        <div class="tax-toggle">
+                <div class="form-check-reverse form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                    <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+                </div>
+            </div>
+    </div>
+
+    <br>
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for(let listing of allListings){%>
+            <a class="listing-link" href="listings/<%=listing._id%>">
+                <div class="card col listing-card">
+                    <img src="<%=listing.image.url%>" class="card-img-top" alt="<%=listing.image%>" style="height: 20rem;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%=listing.title%></b> <br>
+                            &#x20B9 <%=listing.price.toLocaleString('en-IN')%> / Night. 
+                            <i class="tax-info">&nbsp; +18% taxes</i>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+
+</body>
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for (let info of taxInfo) {
+            info.style.display = (info.style.display !== "inline") ? "inline" : "none";
+        }
+    });
+
+    function scrollFilters(amount) {
+        const container = document.getElementById('filters');
+        container.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+</script>
